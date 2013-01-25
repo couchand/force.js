@@ -1,4 +1,4 @@
-var force_js = require('../lib/force.js.js');
+var force_js = require('../lib/force.js');
 
 /*
   ======== A Handy Little Nodeunit Reference ========

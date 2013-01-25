@@ -3,11 +3,11 @@
 A Node.js tool for Salesforce.com development.
 
 ## Getting Started
-Install the module with: `npm install force.js`
+Install the module with: `npm install force-js`
 
 ```javascript
-var force_js = require('force.js');
-force_js.awesome(); // "awesome"
+var force = require('force-js');
+force.awesome(); // "awesome"
 ```
 
 ## Documentation

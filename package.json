@@ -1,5 +1,5 @@
 {
-  "name": "force.js",
+  "name": "force-js",
   "description": "A Node.js tool for Salesforce.com development.",
   "version": "0.1.0",
   "homepage": "https://github.com/couchand/force-js",
