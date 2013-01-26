@@ -96,7 +96,7 @@ exports['Connection'] = {
   },
   'get': function(test) {
     var that = this;
-    test.expect(4);
+    test.expect(5);
     var login = {};
     var resource = {};
     var client_id = {};
@@ -108,6 +108,7 @@ exports['Connection'] = {
      test.strictEqual(that.options['host'], resource, 'the login url should be used for authorization');
      test.strictEqual(that.options['path'], resource_path, 'the path should be the resource path');
      test.strictEqual(that.options['method'], 'GET', 'the method should be get');
+     test.strictEqual(that.options['headers']['Authorization'], 'Bearer ACCESS_TOKEN', 'the access token should be passed in the header');
      test.strictEqual(data["access_token"],'foobar', 'the results should be passed in');
      test.done();
     });
