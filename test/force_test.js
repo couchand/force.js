@@ -1,7 +1,8 @@
 "use strict";
 
-var force_js = require('../lib/force.js'),
-    https    = require('https');
+var force_js    = require('../lib/force.js'),
+    https       = require('https'),
+    querystring = require('querystring');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -25,10 +26,14 @@ var force_js = require('../lib/force.js'),
 
 exports['Connection'] = {
   setUp: function(done) {
+    var that = this;
     https.request = function (options, callback) {
+      that.options = options;
       return {
         'on': function() {},
-        'write': function() {},
+        'write': function(data) {
+          that.data = data;
+        },
         'end': function() {
           callback({
             'setEncoding': function() {},
@@ -63,7 +68,8 @@ exports['Connection'] = {
     test.done();
   },
   'authorize': function(test) {
-    test.expect(1);
+    var that = this;
+    test.expect(6);
     var login = {};
     var resource = {};
     var client_id = {};
@@ -74,6 +80,12 @@ exports['Connection'] = {
     var token = 'TOKEN';
     conn.authorize(username, password, token, function() {
      test.equal(conn.access_token, 'foobar', 'the access token should be parsed from the response');
+     test.strictEqual(that.options['host'], login, 'the login url should be used for authorization');
+     test.strictEqual(that.options['path'], '/services/oauth2/token', 'the path should be the token path');
+     test.strictEqual(that.options['headers']['Content-Type'], 'application/x-www-form-urlencoded', 'the content type should be right');
+     test.ok(that.options['headers'].hasOwnProperty('Content-Length'), 'the content length should be loaded');
+     var params = querystring.parse(that.data);
+     test.equal(params.username,'USERNAME','the username should be passed');
      test.done();
     });
   }
