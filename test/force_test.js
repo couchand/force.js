@@ -69,7 +69,7 @@ exports['Connection'] = {
   },
   'authorize': function(test) {
     var that = this;
-    test.expect(7);
+    test.expect(8);
     var login = {};
     var resource = {};
     var client_id = {};
@@ -82,11 +82,12 @@ exports['Connection'] = {
      test.equal(conn.access_token, 'foobar', 'the access token should be parsed from the response');
      test.strictEqual(that.options['host'], login, 'the login url should be used for authorization');
      test.strictEqual(that.options['path'], '/services/oauth2/token', 'the path should be the token path');
+     test.strictEqual(that.options['method'], 'POST', 'the method should be post');
      test.strictEqual(that.options['headers']['Content-Type'], 'application/x-www-form-urlencoded', 'the content type should be right');
      test.ok(that.options['headers'].hasOwnProperty('Content-Length'), 'the content length should be loaded');
      var params = querystring.parse(that.data);
-     test.equal(params.username,'USERNAME','the username should be passed');
-     test.equal(params.password,'PASSWORDTOKEN','the password/token should be passed');
+     test.strictEqual(params.username,'USERNAME','the username should be passed');
+     test.strictEqual(params.password,'PASSWORDTOKEN','the password/token should be passed');
      test.done();
     });
   }
