@@ -1,4 +1,5 @@
-var force_js = require('../lib/force.js');
+var force_js = require('../lib/force.js')
+  , https    = require('https');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -22,7 +23,22 @@ var force_js = require('../lib/force.js');
 
 exports['Connection'] = {
   setUp: function(done) {
-    // setup here
+    https.request = function (options, callback) {
+      return {
+        'on': function() {},
+        'write': function() {},
+        'end': function() {
+          callback({
+            'setEncoding': function() {},
+            'on': function(evt,callback) {
+              if ( evt === 'data' ) {
+                callback(JSON.stringify({"access_token":"foobar"}));
+              }
+            }
+          });
+        }
+      };
+    };
     done();
   },
   'no args': function(test) {
@@ -43,5 +59,20 @@ exports['Connection'] = {
     test.strictEqual(conn.client_id, client_id, 'the client id should be loaded');
     test.strictEqual(conn.client_secret, client_secret, 'the client secret should be loaded');
     test.done();
+  },
+  'authorize': function(test) {
+    test.expect(1);
+    var login = {};
+    var resource = {};
+    var client_id = {};
+    var client_secret = {};
+    var conn = new force_js.Connection(login, resource, client_id, client_secret);
+    var username = 'USERNAME';
+    var password = 'PASSWORD';
+    var token = 'TOKEN';
+    conn.authorize(username, password, token, function() {
+     test.equal(conn.access_token, 'foobar', 'the access token should be parsed from the response');
+     test.done();
+    });
   }
 };
