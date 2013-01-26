@@ -1,5 +1,7 @@
-var force_js = require('../lib/force.js')
-  , https    = require('https');
+"use strict";
+
+var force_js = require('../lib/force.js'),
+    https    = require('https');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
