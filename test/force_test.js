@@ -41,6 +41,9 @@ exports['Connection'] = {
               if ( evt === 'data' ) {
                 callback(JSON.stringify({"access_token":"foobar"}));
               }
+              if ( evt === 'end' ){
+                callback();
+              }
             }
           });
         }
@@ -88,6 +91,24 @@ exports['Connection'] = {
      var params = querystring.parse(that.data);
      test.strictEqual(params.username,'USERNAME','the username should be passed');
      test.strictEqual(params.password,'PASSWORDTOKEN','the password/token should be passed');
+     test.done();
+    });
+  },
+  'get': function(test) {
+    var that = this;
+    test.expect(4);
+    var login = {};
+    var resource = {};
+    var client_id = {};
+    var client_secret = {};
+    var conn = new force_js.Connection(login, resource, client_id, client_secret);
+    conn.access_token = 'ACCESS_TOKEN';
+    var resource_path = '/path/to/resource';
+    conn.get(resource_path, function(data) {
+     test.strictEqual(that.options['host'], resource, 'the login url should be used for authorization');
+     test.strictEqual(that.options['path'], resource_path, 'the path should be the resource path');
+     test.strictEqual(that.options['method'], 'GET', 'the method should be get');
+     test.strictEqual(data["access_token"],'foobar', 'the results should be passed in');
      test.done();
     });
   }
