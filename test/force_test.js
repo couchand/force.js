@@ -69,7 +69,7 @@ exports['Connection'] = {
   },
   'authorize': function(test) {
     var that = this;
-    test.expect(6);
+    test.expect(7);
     var login = {};
     var resource = {};
     var client_id = {};
@@ -86,6 +86,7 @@ exports['Connection'] = {
      test.ok(that.options['headers'].hasOwnProperty('Content-Length'), 'the content length should be loaded');
      var params = querystring.parse(that.data);
      test.equal(params.username,'USERNAME','the username should be passed');
+     test.equal(params.password,'PASSWORDTOKEN','the password/token should be passed');
      test.done();
     });
   }
