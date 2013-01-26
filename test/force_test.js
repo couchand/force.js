@@ -28,6 +28,7 @@ exports['Connection'] = {
   setUp: function(done) {
     var that = this;
     https.request = function (options, callback) {
+      var me = this;
       that.options = options;
       return {
         'on': function() {},
@@ -110,6 +111,28 @@ exports['Connection'] = {
      test.strictEqual(that.options['method'], 'GET', 'the method should be get');
      test.strictEqual(that.options['headers']['Authorization'], 'Bearer ACCESS_TOKEN', 'the access token should be passed in the header');
      test.strictEqual(data["access_token"],'foobar', 'the results should be passed in');
+     test.done();
+    });
+  },
+  'post': function(test) {
+    var that = this;
+    test.expect(6);
+    var login = {};
+    var resource = {};
+    var client_id = {};
+    var client_secret = {};
+    var conn = new force_js.Connection(login, resource, client_id, client_secret);
+    conn.access_token = 'ACCESS_TOKEN';
+    var resource_path = '/path/to/resource';
+    var some_data = {"FOO":"BAR"};
+    conn.post(resource_path, some_data, function() {
+     test.strictEqual(that.options['host'], resource, 'the login url should be used for authorization');
+     test.strictEqual(that.options['path'], resource_path, 'the path should be the resource path');
+     test.strictEqual(that.options['method'], 'POST', 'the method should be post');
+     test.strictEqual(that.options['headers']['Content-Type'], 'application/json', 'the content type should be right');
+     test.ok(that.options['headers'].hasOwnProperty('Content-Length'), 'the content length should be loaded');
+     var params = JSON.parse(that.data);
+     test.strictEqual(params["FOO"], "BAR",'the data should be passed');
      test.done();
     });
   }
