@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/couchand/force.js.png?branch=master)](https://travis-ci.org/couchand/force.js)
+
 force.js
 ========
 
