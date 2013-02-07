@@ -6,8 +6,10 @@ A Node.js tool for Salesforce.com development.
 Install the module with: `npm install force-js`
 
 ```javascript
-var force = require('force-js');
-force.awesome(); // "awesome"
+var sfdc = require('force-js');
+var connection = new sfdc.Connection( urls, and, oauth, info );
+connection.authorize( user, credentials );
+connection.query( 'select id from lead' ).then( callback );
 ```
 
 ## Documentation
