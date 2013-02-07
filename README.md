@@ -1,14 +1,21 @@
 # force.js
 
-A Node.js tool for Salesforce.com development.
+A Node.js tool to make interacting with the Salesforce.com
+REST API a breeze.
 
 ## Getting Started
-Install the module with: `npm install force-js`
 
-	var sfdc = require('force-js');
-	var connection = new sfdc.Connection( urls, and, oauth, info );
-	connection.authorize( user, credentials );
-	connection.query( 'select id from lead' ).then( callback );
+The dependencies are all in `package.json`. Install with:
+
+	npm install
+
+Then use with:
+
+	var sfdc = require('./lib/force.js');
+	var production = new sfdc.Connection( urls, and, oauth, info );
+	production.authorize( user, credentials );
+	production.query( 'select id from lead' ).then( callback );
+	production.test('BigImportantTest').then( callback );
 
 ## Documentation
 
@@ -64,6 +71,13 @@ information.
 
 List the logged-in user's most recently accessed records.
 Returns a promise which resolves with the list of records.
+
+	#listSObjects()
+
+List the sObject types available.
+
+Returns a promise which resolves with the sObject
+information.
 
 	#query( soql )
 
