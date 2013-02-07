@@ -95,6 +95,17 @@ List the sObject types available.
 Returns a promise which resolves with the sObject
 information.
 
+	#getSObject( type, id )
+
+Get an sObject row.
+
+ * `type`
+   * the sObject type to fetch
+ * `id`
+   * the Id of the sObject
+
+Returns a promise which resolves with the sObject record.
+
 	#query( soql )
 
 Performs a SOQL query.
