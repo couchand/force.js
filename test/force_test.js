@@ -145,7 +145,6 @@ exports["Connection advanced"] = {
     var that = this;
     var query = 'SELECT foo FROM bar';
     var conn = new force_js.Connection();
-
     var results = { 'records': { 'Id': 'foobar' } };
 
     conn.get = function(path) {
@@ -158,6 +157,29 @@ exports["Connection advanced"] = {
     conn.query(query).then(function(records) {
       test.deepEqual(records, {"Id":"foobar"});
       test.ok(that.path.indexOf('q=SELECT+foo+FROM+bar'));
+      test.done();
+    });
+  },
+  'insert': function(test) {
+    test.expect(3);
+    var that = this;
+    var objectType = 'Opportunity';
+    var objectData = { 'Name': 'foobar' };
+    var conn = new force_js.Connection();
+    var results = { 'id': 'newId' };
+
+    conn.post = function(path, data) {
+      that.path = path;
+      that.data = data;
+      var p = new promise.Deferred();
+      p.resolve(results);
+      return p;
+    };
+
+    conn.insert(objectType, objectData).then(function(newId){
+      test.ok(that.path.indexOf('Opportunity'));
+      test.deepEqual(that.data, objectData);
+      test.equal(newId, 'newId');
       test.done();
     });
   }
