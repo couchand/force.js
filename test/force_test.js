@@ -83,7 +83,7 @@ exports['Connection'] = {
     var username = 'USERNAME';
     var password = 'PASSWORD';
     var token = 'TOKEN';
-    conn.authorize(username, password, token, function() {
+    conn.authorize(username, password, token).then(function() {
      test.equal(conn.access_token, 'foobar', 'the access token should be parsed from the response');
      test.strictEqual(that.options['host'], login, 'the login url should be used for authorization');
      test.strictEqual(that.options['path'], '/services/oauth2/token', 'the path should be the token path');
