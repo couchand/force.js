@@ -1,9 +1,16 @@
-# force.js
+force.js
+========
 
 A Node.js tool to make interacting with the Salesforce.com
 REST API a breeze.
 
-## Getting Started
+Getting Started
+---------------
+
+For the moment it's not on npm.  Eventually you'll be able to:
+
+	// won't work!!
+	npm install --save-dev force-js
 
 The dependencies are all in `package.json`. Install with:
 
@@ -23,7 +30,8 @@ Warning
 As always, the only real documentation is the code.
 My apologies for it being so messy.
 
-## Documentation
+Documentation
+-------------
 
 	new sfdc.Connection( login_url, resource_url, client_id, client_secret )
 
@@ -160,15 +168,23 @@ these resources.  For example:
 
 	dev.connect.get('/communities').then( callback );
 
-## Examples
+Examples
+--------
+
 _(Coming soon)_
 
-## Contributing
+Contributing
+------------
+
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/gruntjs/grunt).
 
-## Release History
+Release History
+---------------
+
 _(Nothing yet)_
 
-## License
-Copyright (c) 2013 Andrew Couch  
+License
+-------
+
+Copyright (c) 2013 Andrew Couch
 Licensed under the MIT license.
