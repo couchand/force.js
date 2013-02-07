@@ -31,7 +31,8 @@
     "querystring": ">= 0.1.x"
   },
   "devDependencies": {
-    "grunt": "~0.3.17"
+    "grunt": "~0.3.17",
+    "node-promise": "~0.5.5"
   },
   "keywords": []
 }

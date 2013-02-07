@@ -2,7 +2,8 @@
 
 var force_js    = require('../lib/force.js'),
     https       = require('https'),
-    querystring = require('querystring');
+    querystring = require('querystring'),
+    promise     = require('node-promise');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -105,7 +106,7 @@ exports['Connection'] = {
     var conn = new force_js.Connection(login, resource, client_id, client_secret);
     conn.access_token = 'ACCESS_TOKEN';
     var resource_path = '/path/to/resource';
-    conn.get(resource_path, function(data) {
+    conn.get(resource_path).then(function(data) {
      test.strictEqual(that.options['host'], resource, 'the login url should be used for authorization');
      test.strictEqual(that.options['path'], resource_path, 'the path should be the resource path');
      test.strictEqual(that.options['method'], 'GET', 'the method should be get');
@@ -125,7 +126,7 @@ exports['Connection'] = {
     conn.access_token = 'ACCESS_TOKEN';
     var resource_path = '/path/to/resource';
     var some_data = {"FOO":"BAR"};
-    conn.post(resource_path, some_data, function() {
+    conn.post(resource_path, some_data).then(function() {
      test.strictEqual(that.options['host'], resource, 'the login url should be used for authorization');
      test.strictEqual(that.options['path'], resource_path, 'the path should be the resource path');
      test.strictEqual(that.options['method'], 'POST', 'the method should be post');
@@ -147,12 +148,14 @@ exports["Connection advanced"] = {
 
     var results = { 'records': { 'Id': 'foobar' } };
 
-    conn.get = function(path, callback) {
+    conn.get = function(path) {
       that.path = path;
-      callback(results);
+      var p = new promise.Deferred();
+      p.resolve(results);
+      return p;
     };
 
-    conn.query(query, function(records) {
+    conn.query(query).then(function(records) {
       test.deepEqual(records, {"Id":"foobar"});
       test.ok(that.path.indexOf('q=SELECT+foo+FROM+bar'));
       test.done();
