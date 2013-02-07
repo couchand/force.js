@@ -137,3 +137,25 @@ exports['Connection'] = {
     });
   }
 };
+
+exports["Connection advanced"] = {
+  'query': function(test) {
+    test.expect(2);
+    var that = this;
+    var query = 'SELECT foo FROM bar';
+    var conn = new force_js.Connection();
+
+    var results = { 'records': { 'Id': 'foobar' } };
+
+    conn.get = function(path, callback) {
+      that.path = path;
+      callback(results);
+    };
+
+    conn.query(query, function(records) {
+      test.deepEqual(records, {"Id":"foobar"});
+      test.ok(that.path.indexOf('q=SELECT+foo+FROM+bar'));
+      test.done();
+    });
+  }
+};
