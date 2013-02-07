@@ -182,5 +182,25 @@ exports["Connection advanced"] = {
       test.equal(newId, 'newId');
       test.done();
     });
+  },
+  'describe': function(test) {
+    test.expect(2);
+    var that = this;
+    var objectType = 'Opportunity';
+    var conn = new force_js.Connection();
+    var results = { 'fields': [] };
+
+    conn.get = function(path) {
+      that.path = path;
+      var p = new promise.Deferred();
+      p.resolve(results);
+      return p;
+    };
+
+    conn.describe(objectType).then(function(res){
+      test.ok(that.path.indexOf('Opportunity/describe'));
+      test.deepEqual(res, results);
+      test.done();
+    });
   }
 };
