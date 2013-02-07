@@ -17,6 +17,12 @@ Then use with:
 	production.query( 'select id from lead' ).then( callback );
 	production.test('BigImportantTest').then( callback );
 
+Warning
+-------
+
+As always, the only real documentation is the code.
+My apologies for it being so messy.
+
 ## Documentation
 
 	new sfdc.Connection( login_url, resource_url, client_id, client_secret )
