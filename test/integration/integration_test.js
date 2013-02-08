@@ -95,8 +95,7 @@ module.exports['Integration'] = {
 
         return conn.search('find {Bruce Wayne} returning Contact (Account.Name)');
       }).then(function(batmen) {
-        // TODO: properly clean up so this can be an assert equal
-        test.ok(batmen.length > 1);
+        test.equal(batmen.length, 1);
         return batmen[0];
       }).then(function(batman) {
         test.equal(batman.Account.Name,'Wayne Industries');
