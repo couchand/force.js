@@ -6,7 +6,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: '<json:package.json>',
     test: {
-      files: ['test/**/*.js']
+      unit: ['test/unit/*.js'],
+      integration: ['test/integration/*.js']
     },
     lint: {
       files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
