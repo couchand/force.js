@@ -43,7 +43,7 @@ module.exports['Integration'] = {
       });
     },
     'make and find sobjects': function (test) {
-      test.expect(11);
+      test.expect(15);
       var conn = this.conn;
       var contact_data = {
         'FirstName': 'Bruce',
@@ -82,6 +82,19 @@ module.exports['Integration'] = {
         test.equal(new_contact.LastName, 'Wayne');
         test.equal(new_contact.AccountId, account_data.Id);
         test.equal(new_contact.Id, contact_data.Id);
+
+        return conn.getSObject('contact', new_contact.Id);
+      }).then(function(new_contact) {
+        test.equal(new_contact.Id, contact_data.Id);
+        test.equal(new_contact.AccountId, account_data.Id);
+
+        return conn.search('find {Bruce Wayne} returning Contact (Account.Name)');
+      }).then(function(batmen) {
+        // TODO: properly clean up so this can be an assert equal
+        test.ok(batmen.length > 1);
+        return batmen[0];
+      }).then(function(batman) {
+        test.equal(batman.Account.Name,'Wayne Industries');
 
         test.done();
       });
