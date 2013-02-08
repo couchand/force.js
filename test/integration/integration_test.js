@@ -119,5 +119,64 @@ module.exports['Integration'] = {
         test.done();
       });
     }
+  },
+  'Tooling API': {
+    'validate': function(test) {
+      test.expect(6);
+      var tooling = this.conn.tooling;
+      var data = {};
+
+      tooling.query('select Id, Body from ApexClass').then(function(some_class) {
+        test.ok(some_class.length > 1);
+        return some_class[0];
+      }).then(function(some_class) {
+        data.classId = some_class.Id;
+        data.classBody = some_class.Body;
+
+        return tooling.insert('MetadataContainer', { 'Name': 'Integration deployment test' });
+      }).then(function(new_id) {
+        test.ok(new_id);
+        data.containerId = new_id;
+
+        return tooling.insert('ApexClassMember', {
+          'MetadataContainerId': data.containerId,
+          'ContentEntityId': data.classId,
+          'Body': data.classBody
+        });
+      }).then(function(new_id) {
+        test.ok(new_id);
+        data.classMemberId = new_id;
+
+        return tooling.deploy(data.containerId, true);
+      }).then(function(results) {
+        test.equal(results.State, 'Completed');
+
+        return tooling.destroy('ApexClassMember', data.classMemberId);
+      }).then(function() {
+
+        return tooling.insert('ApexClassMember', {
+          'MetadataContainerId': data.containerId,
+          'ContentEntityId': data.classId,
+          'Body': 'THIS is NOT legal APEX and so SHOULD fail.'
+        });
+      }).then(function(new_id) {
+        test.ok(new_id);
+        data.classMemberId = new_id;
+
+        return tooling.deploy(data.containerId, true);
+      }).then(function(){
+        test.ok(false, 'The deployment check should have failed.');
+      }, function(results) {
+        test.equal(results.State, 'Failed');
+
+        return tooling.destroy('ApexClassMember', data.classMemberId);
+      }).then(function() {
+
+        return tooling.destroy('MetadataContainer', data.containerId);
+      }).then(function() {
+
+        test.done();
+      });
+    }
   }
 };
