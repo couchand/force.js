@@ -52,14 +52,17 @@ module.exports['Integration'] = {
       var account_data = {
         'Name': 'Wayne Industries'
       };
+
       conn.insert('Account', account_data).then(function(account_id) {
         test.ok(account_id);
         account_data.Id = account_id;
         contact_data.AccountId = account_id;
+
         return conn.insert('Contact', contact_data);
       }).then(function(contact_id) {
         test.ok(contact_id);
         contact_data.Id = contact_id;
+
         return conn.query('select Id, Name from Account where Id = \'' + account_data.Id + "'");
       }).then(function(accounts) {
         test.ok(accounts);
@@ -69,6 +72,7 @@ module.exports['Integration'] = {
         test.equal(new_account.Name, account_data.Name);
         test.equal(new_account.Id, account_data.Id);
       }).then(function() {
+
         return conn.query('select Id, AccountId, FirstName, LastName from Contact where Id = \'' + contact_data.Id + "'");
       }).then(function(contacts) {
         test.equal(contacts.length, 1);
@@ -78,6 +82,7 @@ module.exports['Integration'] = {
         test.equal(new_contact.LastName, 'Wayne');
         test.equal(new_contact.AccountId, account_data.Id);
         test.equal(new_contact.Id, contact_data.Id);
+
         test.done();
       });
     }
