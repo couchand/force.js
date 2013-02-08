@@ -159,6 +159,18 @@ Perform an update to the specified record.
 
 Returns a promise which resolves on success.
 
+	#destroy( type, id )
+
+Delete an sObject.  Named `destroy` to avoid conflict with
+JavaScript reserved word `delete`.
+
+ * `type`
+   * the type of sObject to delete
+ * `id`
+   * the id of the sObject to delete
+
+Returns a promise which resolves on success.
+
 	#test( apex_class_name )
 
 Run an Apex test.
