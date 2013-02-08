@@ -31,3 +31,16 @@ c.tooling.getSObject('apexclassmember',mystuff.acm).then(function(res){mystuff.s
 
 c.tooling.deploy('1dcx000000000BKAAY',true).then(console.log,function(err){console.log('err!',err.ErrorMsg,err.CompilerErrors);});
 
+
+
+
+
+
+var con;
+
+c.tooling.insert('metadatacontainer',{'name':'newstuff'}).then(function(id){con = id;});
+
+c.tooling.insert('apexclassmember',{'metadatacontainerid':con,'contententityid':cls.Id,'body':'fdsfdsafds'}).then(console.log, console.log, console.log)
+
+c.deploy(con,true).then(console.log,console.log,console.log);
+
