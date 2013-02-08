@@ -1,6 +1,6 @@
 "use strict";
 
-var force_js    = require('../lib/force.js'),
+var force_js    = require('../../lib/force.js'),
     https       = require('https'),
     querystring = require('querystring'),
     promise     = require('node-promise');

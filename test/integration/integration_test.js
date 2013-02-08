@@ -1,5 +1,5 @@
-var force_js = require('../lib/force.js');
-var creds = require('./integration/creds.js');
+var force_js = require('../../lib/force.js');
+var creds = require('./creds.js');
 
 /*jshint strict:false */
 module.exports['Integration'] = {
