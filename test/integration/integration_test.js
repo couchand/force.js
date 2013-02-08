@@ -43,7 +43,7 @@ module.exports['Integration'] = {
       });
     },
     'make and find sobjects': function (test) {
-      test.expect(16);
+      test.expect(20);
       var conn = this.conn;
       var contact_data = {
         'FirstName': 'Bruce',
@@ -100,6 +100,22 @@ module.exports['Integration'] = {
         return batmen[0];
       }).then(function(batman) {
         test.equal(batman.Account.Name,'Wayne Industries');
+
+        return conn.destroy('account', account_data.Id);
+      }).then(function() {
+
+        return conn.query('select Id from Account where Id = \'' + account_data.Id + "'");
+      }).then(function(accounts) {
+        test.ok(accounts);
+        test.equal(accounts.length, 0);
+
+        return conn.destroy('contact', contact_data.Id);
+      }).then(function() {
+
+        return conn.query('select Id from Contact where Id = \'' + contact_data.Id + "'");
+      }).then(function(contacts) {
+        test.ok(contacts);
+        test.equal(contacts.length, 0);
 
         test.done();
       });

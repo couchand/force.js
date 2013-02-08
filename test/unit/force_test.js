@@ -211,6 +211,25 @@ exports['Connection'] = {
       test.done();
     });
   },
+  'delete': function (test) {
+    test.expect(1);
+    var that = this;
+    var objectType = 'Opportunity';
+    var objectId = '12345';
+    var conn = new force_js.Connection();
+
+    conn.delet = function(path) {
+      that.path = path;
+      var p = new promise.Deferred();
+      p.resolve();
+      return p;
+    };
+
+    conn.destroy(objectType, objectId).then(function() {
+      test.ok(that.path.indexOf('Opportunity/12345'));
+      test.done();
+    });
+  },
   'describe': function(test) {
     test.expect(2);
     var that = this;
