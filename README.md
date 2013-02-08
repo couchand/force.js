@@ -35,6 +35,23 @@ My apologies for it being so messy.
 Documentation
 -------------
 
+	connect( credentials )
+
+An all-in-one authorization method.  Pass it an object with
+the credentials for the instance and user.
+
+ * `login_url`
+ * `resource_url`
+ * `client_id`
+ * `client_secret`
+ * `username`
+ * `password`
+ * `token`
+   * as described below
+
+Returns a promise which resolves with a fully authenticated
+connection to the Salesforce instance.
+
 	new sfdc.Connection( login_url, resource_url, client_id, client_secret )
 
 The constructor for a connection to a particular
@@ -209,7 +226,7 @@ these resources.  For example:
 Examples
 --------
 
-_(Coming soon)_
+See the integration tests for examples.
 
 Contributing
 ------------
