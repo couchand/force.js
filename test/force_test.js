@@ -25,6 +25,8 @@ var force_js    = require('../lib/force.js'),
     test.ifError(value)
 */
 
+var oldhttpsrequest = https.request;
+
 exports['Connection'] = {
   setUp: function(done) {
     var that = this;
@@ -51,6 +53,10 @@ exports['Connection'] = {
         }
       };
     };
+    done();
+  },
+  tearDown: function(done) {
+    https.request = oldhttpsrequest;
     done();
   },
   'no args': function(test) {
@@ -138,10 +144,8 @@ exports['Connection'] = {
      test.strictEqual(params["FOO"], "BAR",'the data should be passed');
      test.done();
     });
-  }
-};
+  },
 
-exports["Connection advanced"] = {
   'query': function(test) {
     test.expect(2);
     var that = this;
