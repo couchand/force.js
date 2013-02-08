@@ -153,7 +153,7 @@ Run an Apex test.
  * `apex_class_name`
    * the name of the Apex test class to execute
 
-Returns a promise with resolves with the results of the
+Returns a promise which resolves with the results of the
 test.
 
 	#get( path )
