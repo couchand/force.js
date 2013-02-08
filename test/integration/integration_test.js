@@ -4,8 +4,9 @@ var creds = require('./creds.js');
 /*jshint strict:false */
 module.exports['Integration'] = {
   setUp: function (done) {
-    var conn = this.conn = new force_js.Connection( creds.login_url, creds.resource_url, creds.client_key, creds.client_secret );
-    conn.authorize( creds.username, creds.password, creds.token ).then(function() {
+    var that = this;
+    force_js.connect( creds ).then(function(c) {
+      that.conn = c;
       done();
     });
   },
