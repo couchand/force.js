@@ -141,10 +141,23 @@ Create a new sObject record.
  * `type`
    * the type of sObject to create
  * `data`
-   * JSON encoded field information for the sObject
+   * field information for the sObject
 
 Returns a promise which resolves with the Id of the newly
 created sObject.
+
+	#update( type, id, data )
+
+Perform an update to the specified record.
+
+ * `type`
+   * the type of sObject to update
+ * `id`
+   * the id of the sObject to update
+ * `data`
+   * field information for the sObject
+
+Returns a promise which resolves on success.
 
 	#test( apex_class_name )
 
