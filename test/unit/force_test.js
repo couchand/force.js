@@ -189,6 +189,28 @@ exports['Connection'] = {
       test.done();
     });
   },
+  'update': function (test) {
+    test.expect(2);
+    var that = this;
+    var objectType = 'Opportunity';
+    var objectId = '12345';
+    var objectData = { 'Name': 'foobar' };
+    var conn = new force_js.Connection();
+
+    conn.patch = function(path, data) {
+      that.path = path;
+      that.data = data;
+      var p = new promise.Deferred();
+      p.resolve();
+      return p;
+    };
+
+    conn.update(objectType, objectId, objectData).then(function() {
+      test.ok(that.path.indexOf('Opportunity/12345'));
+      test.deepEqual(that.data, objectData);
+      test.done();
+    });
+  },
   'describe': function(test) {
     test.expect(2);
     var that = this;

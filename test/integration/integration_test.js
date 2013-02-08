@@ -43,11 +43,12 @@ module.exports['Integration'] = {
       });
     },
     'make and find sobjects': function (test) {
-      test.expect(15);
+      test.expect(16);
       var conn = this.conn;
       var contact_data = {
         'FirstName': 'Bruce',
-        'LastName': 'Wayne'
+        'LastName': 'Wayne',
+        'Phone': '666-420-4242'
       };
       var account_data = {
         'Name': 'Wayne Industries'
@@ -73,20 +74,24 @@ module.exports['Integration'] = {
         test.equal(new_account.Id, account_data.Id);
       }).then(function() {
 
-        return conn.query('select Id, AccountId, FirstName, LastName from Contact where Id = \'' + contact_data.Id + "'");
+        return conn.query('select Id, AccountId, FirstName, LastName, Phone from Contact where Id = \'' + contact_data.Id + "'");
       }).then(function(contacts) {
         test.equal(contacts.length, 1);
         return contacts[0];
       }).then(function(new_contact) {
         test.equal(new_contact.FirstName, 'Bruce');
         test.equal(new_contact.LastName, 'Wayne');
+        test.equal(new_contact.Phone, '666-420-4242');
         test.equal(new_contact.AccountId, account_data.Id);
         test.equal(new_contact.Id, contact_data.Id);
 
-        return conn.getSObject('contact', new_contact.Id);
+        return conn.update('contact', contact_data.Id, { 'Phone': '123-456-7890' });
+      }).then(function() {
+
+        return conn.getSObject('contact', contact_data.Id);
       }).then(function(new_contact) {
         test.equal(new_contact.Id, contact_data.Id);
-        test.equal(new_contact.AccountId, account_data.Id);
+        test.equal(new_contact.Phone, '123-456-7890');
 
         return conn.search('find {Bruce Wayne} returning Contact (Account.Name)');
       }).then(function(batmen) {
