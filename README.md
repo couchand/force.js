@@ -45,30 +45,30 @@ production.insert('Account', {
   Name: 'Wayne Industries'
 }).then(function( newId ) {
   records.accountId = newId;
-}).then(function() {
+
   return production.insert('Contact' {
     FirstName: 'Bruce',
     LastName: 'Wayne',
     AccountId: records.accountId
-  }).then(function( newId ) {
-    records.contactId = newId;
   });
-}).then(function() {
+}).then(function( newId ) {
+  records.contactId = newId;
+
   return production.insert('Opportunity', {
     Name: 'Big sale to the man of darkness',
     AccountId: records.accountId
-  }).then(function( newId ) {
-    records.opportunityId = newId;
   });
-}).then(function() {
+}).then(function( newId ) {
+  records.opportunityId = newId;
+
   production.insert('OpportunityLineItem', {
     OpportunityId: records.opportunityId,
     PricebookEntryId: silentHawkHelicopterId,
     Quantity: 1,
     UnitPrice: 35000000
-  }).then(function( newId ) {
-    records.opportunityLineItemId = newId;
   });
+}).then(function( newId ) {
+  records.opportunityLineItemId = newId;
 });
 ```
 
