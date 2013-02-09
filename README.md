@@ -21,10 +21,12 @@ The dependencies are all in `package.json`. Install with:
 Then use with:
 
 	var sfdc = require('./lib/force.js');
-	var production = new sfdc.Connection( urls, and, oauth, info );
-	production.authorize( user, credentials );
-	production.query( 'select id from lead' ).then( callback );
-	production.test('BigImportantTest').then( callback );
+	var creds = require('./creds/production.js');
+
+	sfdc.connect(cred).then(function(production) {
+	  production.query( 'select id from lead' ).then( callback );
+	  production.test('BigImportantTest').then( callback );
+	}
 
 Warning
 -------
