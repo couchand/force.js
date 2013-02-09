@@ -2,6 +2,42 @@ var force_js = require('../../lib/force.js');
 var creds = require('./creds.js');
 
 /*jshint strict:false */
+module.exports['Integration failure'] = {
+  setUp: function(done) {
+    this.credentials = {};
+    for ( var prop in creds ) {
+      this.credentials[prop] = creds[prop];
+    }
+    done();
+  },
+  'No token': function(test) {
+    test.expect(1);
+    var creds_minus_token = this.credentials;
+    creds_minus_token['token'] = '';
+
+    force_js.connect( creds_minus_token ).then(function(c) {
+      test.ok(false, 'there should have been an authentication failure');
+      test.done();
+    }, function(err) {
+      test.ok(err.indexOf('token'));
+      test.done();
+    });
+  },
+  'No password': function(test) {
+    test.expect(1);
+    var creds_minus_pw = this.credentials;
+    creds_minus_pw['password'] = '';
+
+    force_js.connect( creds_minus_pw ).then(function(c) {
+      test.ok(false, 'there should have been an authentication failure');
+      test.done();
+    }, function(err) {
+      test.ok(err.indexOf('grant'));
+      test.done();
+    });
+  }
+};
+
 module.exports['Integration'] = {
   setUp: function (done) {
     var that = this;

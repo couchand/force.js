@@ -27,6 +27,50 @@ var force_js    = require('../../lib/force.js'),
 
 var oldhttpsrequest = https.request;
 
+exports['Connection failure'] = {
+  setUp: function(done) {
+    var that = this;
+    https.request = function (options, callback) {
+      var me = this;
+      that.options = options;
+      return {
+        'on': function() {},
+        'write': function(data) {
+          that.data = data;
+        },
+        'end': function() {
+          callback({
+            'setEncoding': function() {},
+            'on': function(evt,callback) {
+              if ( evt === 'data' ) {
+                callback(JSON.stringify({
+                  error: "invalid_grant",
+                  error_description: "authentication failure - Failed: API security token required"
+                }));
+              }
+              if ( evt === 'end' ){
+                callback();
+              }
+            }
+          });
+        }
+      };
+    };
+    done();
+  },
+  'authorization failure': function(test) {
+    test.expect(1);
+    var conn = new force_js.Connection('login', 'resource', 'client_id', 'client_secret');
+    conn.authorize('username', 'password', 'token').then(function() {
+     test.ok(false, 'the promise should have bee rejected due to failed authentication');
+     test.done();
+    }, function(err) {
+     test.equal(err, "authentication failure - Failed: API security token required");
+     test.done();
+    });
+  }
+};
+
 exports['Connection'] = {
   setUp: function(done) {
     var that = this;
