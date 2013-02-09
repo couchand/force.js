@@ -11,58 +11,66 @@ Getting Started
 
 For the moment it's not on npm.  Eventually you'll be able to:
 
-	// won't work!!
-	npm install --save-dev force-js
+```bash
+# won't work!!
+npm install --save-dev force-js
+```
 
 So just clone the repo.  The dependencies are all in `package.json`. Install with:
 
-	npm install
+```bash
+npm install
+```
 
 Then use with:
 
-	var sfdc = require('./lib/force.js');
-	var creds = require('./creds/production.js');
+```js
+var sfdc = require('./lib/force.js');
+var creds = require('./creds/production.js');
 
-	sfdc.connect( creds ).then(function( production ) {
-	  production.query( 'select id from lead' ).then( callback );
-	  production.test('BigImportantTest').then( callback );
-	}
+sfdc.connect( creds ).then(function( production ) {
+  production.query( 'select id from lead' ).then( callback );
+  production.test('BigImportantTest').then( callback );
+}
+```
 
 The API is completely promise-based, making it very easy to
 chain dependent calls without drifting too far right.
 Look at `test/integration` for an example.
 
-	var records = {};
+```js
+var records = {};
 
-	production.insert('Account', {
-	  Name: 'Wayne Industries'
-	}).then(function( newId ) {
-	  records.accountId = newId;
-	}).then(function() {
-	  return production.insert('Contact' {
-	    FirstName: 'Bruce',
-	    LastName: 'Wayne',
-	    AccountId: records.accountId
-	  }).then(function( newId ) {
-	    records.contactId = newId;
-	  });
-	}).then(function() {
-	  return production.insert('Opportunity', {
-	    Name: 'Big sale to the man of darkness',
-	    AccountId: records.accountId
-	  }).then(function( newId ) {
-	    records.opportunityId = newId;
-	  });
-	}).then(function() {
-	  production.insert('OpportunityLineItem', {
-	    OpportunityId: records.opportunityId,
-	    PricebookEntryId: silentHawkHelicopterId,
-	    Quantity: 1,
-	    UnitPrice: 35000000
-	  }).then(function( newId ) {
-	    records.opportunityLineItemId = newId;
-	  });
-	});
+production.insert('Account', {
+  Name: 'Wayne Industries'
+}).then(function( newId ) {
+  records.accountId = newId;
+}).then(function() {
+  return production.insert('Contact' {
+    FirstName: 'Bruce',
+    LastName: 'Wayne',
+    AccountId: records.accountId
+  }).then(function( newId ) {
+    records.contactId = newId;
+  });
+}).then(function() {
+  return production.insert('Opportunity', {
+    Name: 'Big sale to the man of darkness',
+    AccountId: records.accountId
+  }).then(function( newId ) {
+    records.opportunityId = newId;
+  });
+}).then(function() {
+  production.insert('OpportunityLineItem', {
+    OpportunityId: records.opportunityId,
+    PricebookEntryId: silentHawkHelicopterId,
+    Quantity: 1,
+    UnitPrice: 35000000
+  }).then(function( newId ) {
+    records.opportunityLineItemId = newId;
+  });
+});
+```
 
 Warning
 -------
