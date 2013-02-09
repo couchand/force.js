@@ -261,13 +261,15 @@ JavaScript prototype of the Connection.  Thus, most of the
 methods available on the base Connection are available on
 these resources.  For example:
 
-	dev.tooling.listSObjects().then( callback );
+```json
+dev.tooling.listSObjects().then( callback );
 
-	dev.tooling.insert( tooling_object, data );
+dev.tooling.insert( tooling_object, data );
 
-	dev.chatter.get('/feeds').then( callback );
+dev.chatter.get('/feeds').then( callback );
 
-	dev.connect.get('/communities').then( callback );
+dev.connect.get('/communities').then( callback );
+```
 
 Examples
 --------
